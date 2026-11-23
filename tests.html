@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nirdesh engine tests</title>
+<style>
+  body { font: 15px/1.5 system-ui, sans-serif; max-width: 760px; margin: 24px auto; padding: 0 16px; color: #3B2A24; background: #FFF8EC; }
+  li { margin: 6px 0; } .pass { color: #1d6b2a; } .fail { color: #a11; font-weight: 700; }
+  code { font-size: 13px; }
+</style>
+</head>
+<body>
+<h1>Nirdesh engine tests</h1>
+<p id="summary"></p>
+<ol id="results"></ol>
+<script src="data.js"></script>
+<script src="engine.js"></script>
+<script>
+const EXPECTED_ROCKET = 'Act as a rocket scientist from ISRO who is also a friendly teacher. Explain rocket science, from the basics up to the main ideas. I am a Class 9-10 CBSE student. I know my school textbook basics but no advanced maths. Use simple language and real examples like ISRO missions such as Chandrayaan-3. Keep it under 500 words. Give the result as: a one-line definition, 5 key ideas each with a simple diagram, one real example, and a 5-question quiz with answers.';
+
+const cases = [
+  ['I want to learn rocket science', '9-10', r => r.intent === 'learn' && r.subject === 'space' && r.prompt === EXPECTED_ROCKET],
+  ['make a poster on water cycle', '9-10', r => r.intent === 'make' && r.subject === 'geography' && r.parts.output.includes('numbered steps')],
+  ['quiz me on photosynthesis', '9-10', r => r.intent === 'practise' && r.subject === 'biology' && r.parts.output.includes('10 questions')],
+  ['plan my study timetable for exams', '9-10', r => r.intent === 'plan' && r.subject === 'study' && r.parts.output.includes('day-by-day table')],
+  ['explain integration', '11-12', r => r.subject === 'maths' && r.parts.constraints.includes('under 700 words')],
+  ['what is democracy?', '9-10', r => r.intent === 'learn' && r.subject === 'civics' && r.topic === 'democracy'],
+  ['I want to learn about dinosaurs', '9-10', r => r.subject === 'general' && r.parts.role === 'Act as an expert teacher in dinosaurs.'],
+  ['make a worksheet on sound', 'teacher', r => r.parts.context.includes('CBSE school teacher')],
+  ['   ', '9-10', r => r.error === 'short' && r.prompt === undefined],
+];
+
+// Test 10: house rules for every generated prompt.
+const wellFormed = r => r.error || (
+  !r.prompt.includes('  ') && !r.prompt.includes('..') && r.score === 5 &&
+  PART_KEYS.every(k => /^[A-Z]/.test(r.parts[k]))
+);
+
+const out = document.getElementById('results');
+let passed = 0;
+const report = (name, ok, detail) => {
+  passed += ok;
+  const li = document.createElement('li');
+  li.className = ok ? 'pass' : 'fail';
+  li.innerHTML = (ok ? 'PASS ' : 'FAIL ') + name + (ok ? '' : '<br><code></code>');
+  if (!ok) li.querySelector('code').textContent = JSON.stringify(detail, null, 1);
+  out.append(li);
+};
+const results = cases.map(([idea, level, check]) => {
+  const r = buildPrompt(idea, level);
+  report(`"${idea}", ${level}`, check(r), r);
+  return r;
+});
+report('Every prompt: no double spaces, no "..", capital starts, score 5', results.every(wellFormed), results.filter(r => !wellFormed(r)));
+
+const total = cases.length + 1;
+document.getElementById('summary').textContent = `${passed} / ${total} passed`;
+document.title = `${passed === total ? 'PASS' : 'FAIL'} ${passed}/${total} · Nirdesh tests`;
+</script>
+</body>
+</html>

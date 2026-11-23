@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nirdesh · the prompt superpower</title>
+<meta name="description" content="Type an idea in plain words and get a detailed AI prompt, built with RTCCO. Free, no login.">
+<meta name="theme-color" content="#3B2A24">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Hind:wght@400;600;700&family=Kalam:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/rough-notation@0.5.1/lib/rough-notation.iife.js" defer></script>
+<script src="data.js" defer></script>
+<script src="engine.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<main class="page">
+
+  <!-- Chapter 1 · Type your idea -->
+  <section class="chapter chapter-1" aria-labelledby="title">
+    <header class="masthead">
+      <div>
+        <h1 id="title" class="masthead-title">NIRDESH!</h1>
+        <p class="tagline" data-i18n="tagline">निर्देश · the prompt superpower</p>
+      </div>
+      <div class="masthead-side">
+        <p class="issue"><span data-i18n="issue">ISSUE #01</span><br><span data-i18n="free">FREE · NO LOGIN</span></p>
+        <button type="button" class="lang" id="lang" aria-label="हिंदी में देखें"><span data-l="en">EN</span> | <span data-l="hi">हिं</span></button>
+      </div>
+    </header>
+
+    <div class="duo">
+      <div class="panel intro">
+        <p class="label" data-i18n="panel1">PANEL 1</p>
+        <p class="bubble" data-i18n="bubble1">"Tell me about rockets."</p>
+        <svg class="face" aria-hidden="true" width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="20" r="12" fill="none" stroke="#3B2A24" stroke-width="2.5"/><path d="M10 54 C 12 38, 44 38, 46 54" fill="none" stroke="#3B2A24" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="19" r="1.6" fill="#3B2A24"/><circle cx="32" cy="19" r="1.6" fill="#3B2A24"/><path d="M24 25 C 27 23, 29 23, 32 25" fill="none" stroke="#3B2A24" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="panel panel-cocoa intro">
+        <p class="label" data-i18n="panel2">PANEL 2</p>
+        <p class="hand-line" data-i18n="boring">AI: "Rockets are... (a long, boring wall of text)"</p>
+        <p class="zzz" aria-hidden="true">ZZZ...</p>
+      </div>
+    </div>
+
+    <form id="idea-form" class="idea-form" novalidate>
+      <div class="panel panel-yellow shadow">
+        <p class="label" data-i18n="panel3">PANEL 3 · YOUR TURN</p>
+        <h2 class="headline"><span data-i18n="stop">STOP ASKING.</span><br><span data-i18n="start">START DIRECTING!</span></h2>
+        <label for="idea" class="idea-label" data-i18n="askLabel">What do you want to learn or make?</label>
+        <input id="idea" name="idea" class="idea-input" type="text" autocomplete="off" maxlength="200"
+               placeholder="I want to learn rocket science" data-i18n-ph="placeholder" aria-describedby="idea-msg">
+        <p id="idea-msg" class="msg" role="status" data-i18n="short" hidden>Tell me a little more, like "I want to learn about volcanoes".</p>
+        <fieldset class="chips">
+          <legend class="sr-only">Class</legend>
+          <label class="chip-radio"><input type="radio" name="level" value="9-10" checked><span class="chip" data-i18n="lvl910">Class 9–10</span></label>
+          <label class="chip-radio"><input type="radio" name="level" value="11-12"><span class="chip" data-i18n="lvl1112">Class 11–12</span></label>
+          <label class="chip-radio"><input type="radio" name="level" value="teacher"><span class="chip" data-i18n="lvlTeacher">Teacher</span></label>
+        </fieldset>
+      </div>
+      <button type="submit" class="btn btn-big" data-i18n="make">POW! MAKE MY PROMPT →</button>
+    </form>
+
+    <ol class="steps">
+      <li><b>1</b><span data-i18n="step1">type it</span></li>
+      <li><b>2</b><span data-i18n="step2">get prompt</span></li>
+      <li><b>3</b><span data-i18n="step3">learn RTCCO</span></li>
+      <li><b>4</b><span data-i18n="step4">copy &amp; go</span></li>
+    </ol>
+  </section>
+
+  <div id="result" hidden>
+
+    <!-- Chapter 2 · Your prompt -->
+    <section class="chapter" id="chapter-2" aria-labelledby="powered" tabindex="-1">
+      <p class="strip"><span data-i18n="ch2">CHAPTER 2 · THE POWER-UP</span><span>NIRDESH!</span></p>
+
+      <div class="typed-row">
+        <div class="panel typed-panel">
+          <p class="label" data-i18n="typed">YOU TYPED</p>
+          <p class="typed"><span id="typed"></span></p>
+        </div>
+        <svg class="burst burst-zap" aria-hidden="true" width="92" height="80" viewBox="0 0 92 80"><path d="M46 2 L 54 22 L 76 10 L 66 32 L 90 38 L 66 46 L 78 70 L 54 56 L 46 78 L 38 56 L 14 70 L 26 46 L 2 38 L 26 32 L 16 10 L 38 22 Z" fill="#FFD21F" stroke="#3B2A24" stroke-width="2.5" stroke-linejoin="round"/><text x="46" y="47" text-anchor="middle" font-family="Bangers, sans-serif" font-size="22" fill="#3B2A24">ZAP!</text></svg>
+      </div>
+
+      <h2 id="powered" class="powered"><span data-i18n="powered1">YOUR PROMPT IS</span> <mark data-i18n="powered2">POWERED UP!</mark></h2>
+
+      <div class="prompt-box">
+        <p class="prompt-head"><span data-i18n="boxHead">FINISHED PROMPT / COPY IT</span><span>R·T·C·C·O</span></p>
+        <p id="prompt" class="prompt-text" aria-live="polite"></p>
+        <div class="stamp" aria-label="score"><span id="score" class="stamp-score">5/5</span><span class="stamp-word" data-i18n="power">power!</span></div>
+      </div>
+      <ul id="tips" class="tips"></ul>
+      <p id="hi-note" class="hi-note" data-i18n="hiNote" hidden></p>
+
+      <div class="actions">
+        <button type="button" class="btn btn-md" data-copy data-i18n="copy">COPY IT!</button>
+        <a class="btn btn-plain" data-wa href="https://wa.me/" target="_blank" rel="noopener" data-i18n="share">Share on WhatsApp</a>
+      </div>
+
+      <div class="helper">
+        <p class="bubble" data-i18n="psst">Psst! Want to know the secret? Scroll down ↓</p>
+        <svg aria-hidden="true" width="48" height="64" viewBox="0 0 48 64"><circle cx="24" cy="14" r="11" fill="#FFF8EC" stroke="#3B2A24" stroke-width="2.5"/><circle cx="20" cy="13" r="1.6" fill="#3B2A24"/><circle cx="28" cy="13" r="1.6" fill="#3B2A24"/><path d="M19 18 C 22 21, 26 21, 29 18" fill="none" stroke="#3B2A24" stroke-width="2" stroke-linecap="round"/><path d="M6 62 C 8 40, 40 40, 42 62" fill="#FFF8EC" stroke="#3B2A24" stroke-width="2.5"/></svg>
+      </div>
+    </section>
+
+    <!-- Chapter 3 · How we built it -->
+    <section class="chapter" aria-labelledby="secret">
+      <header class="secret">
+        <p class="label" data-i18n="ch3">CHAPTER 3 · THE SECRET</p>
+        <h2 id="secret" class="headline"><span data-i18n="secret1">5 SUPERPOWERS</span><br><span data-i18n="secret2">OF A GREAT PROMPT</span></h2>
+        <div class="tiles" aria-hidden="true">
+          <span class="tile" style="--hl: var(--r)">R</span><span class="tile" style="--hl: var(--t)">T</span><span class="tile" style="--hl: var(--c1)">C</span><span class="tile" style="--hl: var(--c2)">C</span><span class="tile" style="--hl: var(--o)">O</span>
+        </div>
+      </header>
+
+      <article class="panel part-panel" data-key="role" style="--hl: var(--r)">
+        <h3 class="part-head"><span class="badge" aria-hidden="true">R</span><span class="part-name" data-i18n="name_role">ROLE · THE EXPERT MASK</span></h3>
+        <p class="part"><span class="part-text"></span></p>
+        <p class="bubble bubble-sm" data-i18n="note_role">We gave it an expert job, so it talks like an expert, but kindly.</p>
+      </article>
+      <article class="panel part-panel" data-key="task" style="--hl: var(--t)">
+        <h3 class="part-head"><span class="badge" aria-hidden="true">T</span><span class="part-name" data-i18n="name_task">TASK · THE MISSION</span></h3>
+        <p class="part"><span class="part-text"></span></p>
+        <p class="bubble bubble-sm" data-i18n="note_task">One clear job. Start with a doing word: explain, make, compare.</p>
+      </article>
+      <article class="panel part-panel" data-key="context" style="--hl: var(--c1)">
+        <h3 class="part-head"><span class="badge" aria-hidden="true">C</span><span class="part-name" data-i18n="name_context">CONTEXT · YOUR ORIGIN STORY</span></h3>
+        <p class="part"><span class="part-text"></span></p>
+        <p class="bubble bubble-sm" data-i18n="note_context">AI can't read your mind. Tell it who you are.</p>
+      </article>
+      <article class="panel part-panel" data-key="constraints" style="--hl: var(--c2)">
+        <h3 class="part-head"><span class="badge" aria-hidden="true">C</span><span class="part-name" data-i18n="name_constraints">CONSTRAINTS · THE RULES</span></h3>
+        <p class="part"><span class="part-text"></span></p>
+        <p class="bubble bubble-sm" data-i18n="note_constraints">Rules stop it from going too long or too hard.</p>
+      </article>
+      <article class="panel part-panel" data-key="output" style="--hl: var(--o)">
+        <h3 class="part-head"><span class="badge" aria-hidden="true">O</span><span class="part-name" data-i18n="name_output">OUTPUT · THE FINAL FORM</span></h3>
+        <p class="part"><span class="part-text"></span></p>
+        <p class="bubble bubble-sm" data-i18n="note_output">Say exactly what the answer should look like.</p>
+      </article>
+
+      <div class="duo">
+        <div class="panel panel-cocoa compare">
+          <h3 class="compare-title" data-i18n="without">WITHOUT POWERS</h3>
+          <p class="compare-box" id="without-topic"></p>
+          <p class="compare-note" data-i18n="boringShort">A long, boring wall of text.</p>
+        </div>
+        <div class="panel panel-yellow compare shadow-sm">
+          <h3 class="compare-title" data-i18n="with">WITH RTCCO</h3>
+          <p class="compare-box compare-box-white" data-i18n="fivePart">5-part prompt</p>
+          <p class="compare-note" data-i18n="lesson">A lesson made for you, with a quiz.</p>
+        </div>
+      </div>
+      <p class="same" data-i18n="same">SAME AI. VERY DIFFERENT ANSWER!</p>
+    </section>
+
+    <!-- Chapter 4 · Copy and go -->
+    <section class="chapter" aria-labelledby="hero">
+      <p class="strip"><span data-i18n="ch4">CHAPTER 4 · THE HERO WINS</span><span>NIRDESH!</span></p>
+
+      <div class="panel panel-yellow shadow hero">
+        <h2 id="hero" class="headline headline-xl"><span data-i18n="turn1">YOUR TURN,</span><br><span data-i18n="turn2">HERO!</span></h2>
+        <p class="hero-line" data-i18n="paste">Copy the prompt and paste it into Claude or any AI app.</p>
+        <svg class="burst burst-wow" aria-hidden="true" width="96" height="84" viewBox="0 0 96 84"><path d="M48 2 L 57 24 L 80 12 L 70 35 L 94 41 L 70 49 L 82 74 L 57 60 L 48 82 L 39 60 L 14 74 L 26 49 L 2 41 L 26 35 L 16 12 L 39 24 Z" fill="#FFF8EC" stroke="#3B2A24" stroke-width="2.5" stroke-linejoin="round"/><text x="48" y="50" text-anchor="middle" font-family="Bangers, sans-serif" font-size="22" fill="#3B2A24">WOW!</text></svg>
+      </div>
+
+      <button type="button" class="btn btn-big" data-copy data-i18n="copyBig">COPY MY PROMPT!</button>
+      <a class="btn btn-plain btn-wide" data-wa href="https://wa.me/" target="_blank" rel="noopener" data-i18n="share">Share on WhatsApp</a>
+
+      <div class="panel">
+        <h3 class="panel-title" data-i18n="extra">EXTRA POWER-UPS</h3>
+        <p class="small" data-i18n="notRight">Not quite right? Add one more line:</p>
+        <div class="chips">
+          <button type="button" class="chip chip-white" data-followup="simpler" aria-pressed="false" data-i18n="fu_simpler">+ Make it simpler</button>
+          <button type="button" class="chip chip-white" data-followup="quiz" aria-pressed="false" data-i18n="fu_quiz">+ Add a quiz</button>
+          <button type="button" class="chip chip-white" data-followup="ask" aria-pressed="false" data-i18n="fu_ask">+ Ask me questions first</button>
+          <button type="button" class="chip chip-white" data-followup="ncert" aria-pressed="false" data-i18n="fu_ncert">+ Check against NCERT</button>
+        </div>
+        <details class="edit">
+          <summary data-i18n="edit">Edit the five parts yourself →</summary>
+          <div class="edit-fields">
+            <label style="--hl: var(--r)"><span data-i18n="edit_role">R · Role</span><textarea data-edit="role" rows="2"></textarea></label>
+            <label style="--hl: var(--t)"><span data-i18n="edit_task">T · Task</span><textarea data-edit="task" rows="2"></textarea></label>
+            <label style="--hl: var(--c1)"><span data-i18n="edit_context">C · Context</span><textarea data-edit="context" rows="3"></textarea></label>
+            <label style="--hl: var(--c2)"><span data-i18n="edit_constraints">C · Constraints</span><textarea data-edit="constraints" rows="3"></textarea></label>
+            <label style="--hl: var(--o)"><span data-i18n="edit_output">O · Output</span><textarea data-edit="output" rows="3"></textarea></label>
+          </div>
+        </details>
+      </div>
+
+      <div class="cheat">
+        <svg class="scissors" aria-hidden="true" width="26" height="26" viewBox="0 0 26 26"><circle cx="6" cy="6" r="4" fill="none" stroke="#3B2A24" stroke-width="2"/><circle cx="6" cy="20" r="4" fill="none" stroke="#3B2A24" stroke-width="2"/><path d="M9 8 L 24 18 M9 18 L 24 8" stroke="#3B2A24" stroke-width="2" stroke-linecap="round"/></svg>
+        <h3 class="panel-title" data-i18n="cheat">CHEAT SHEET · SCREENSHOT ME</h3>
+        <p class="cheat-line">Act as <span style="--hl: var(--r)">[ROLE]</span>. <span style="--hl: var(--t)">[TASK]</span>. I am <span style="--hl: var(--c1)">[WHO YOU ARE]</span>. Follow these rules: <span style="--hl: var(--c2)">[RULES]</span>. Give the result as <span style="--hl: var(--o)">[FORMAT]</span>.</p>
+        <p class="cheat-note" data-i18n="works">Works for any subject. Made by IIT Roorkee students.</p>
+      </div>
+    </section>
+  </div>
+</main>
+</body>
+</html>
