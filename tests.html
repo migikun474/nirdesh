@@ -29,6 +29,10 @@ const cases = [
   ['I want to learn about dinosaurs', '9-10', r => r.subject === 'general' && r.parts.role === 'Act as an expert teacher in dinosaurs.'],
   ['make a worksheet on sound', 'teacher', r => r.parts.context.includes('CBSE school teacher')],
   ['   ', '9-10', r => r.error === 'short' && r.prompt === undefined],
+  // Beyond the plan: specific formats and clean topics.
+  ['make me integration and make interactive comic', '9-10', r => r.topic === 'integration' && r.parts.task.startsWith('Help me make an interactive comic about integration.') && r.parts.output.includes('panels')],
+  ['I am weak in trigonometry', '9-10', r => r.topic === 'trigonometry' && r.subject === 'maths' && r.parts.context.includes('go slowly')],
+  ['why is the sky blue', '9-10', r => r.parts.task.startsWith('Answer this question: Why is the sky blue?') && !r.parts.role.includes('teacher in why')],
 ];
 
 // Test 10: house rules for every generated prompt.

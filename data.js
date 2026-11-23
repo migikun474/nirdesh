@@ -62,9 +62,38 @@ const NIRDESH_DATA = {
     ['learn', ['learn', 'understand', 'explain', 'know', 'what is', 'how does', 'why', 'teach me', 'about']],
   ],
 
+  // Things a student can make. Found anywhere in the idea; first match wins, so longer names come first.
+  // Each gets its own output format so "make a comic" and "make notes" ask for different things.
+  artifacts: [
+    { words: ['lesson plan'], output: 'Give the result as: learning goals, a 40-minute timeline with numbered steps, one class activity, board work, and 5 exit questions with answers.' },
+    { words: ['quiz game'], output: 'Give the result as: the game rules, 15 questions in 3 levels (easy, medium, hard) with answers, a scoring system, and numbered steps to set it up in class.' },
+    { words: ['mind map'], output: 'Give the result as: the main idea in the centre, 5 to 6 branches with 2 to 3 short points each, written as a nested list I can copy onto paper.' },
+    { words: ['video script', 'script'], output: 'Give the result as: a 2-minute script in numbered scenes, each with what is on screen and exactly what is said.' },
+    { words: ['comic strip', 'comic'], output: 'Give the result as: a one-line story idea, 6 to 8 numbered panels each with the scene, what each character says, and one key fact, and a 3-question quiz at the end.' },
+    { words: ['poster', 'chart'], output: 'Give the result as: a catchy title, 4 to 5 sections with short text and a drawing idea for each, a colour plan, and numbered steps to draw it on chart paper.' },
+    { words: ['presentation', 'ppt', 'slides'], output: 'Give the result as: 8 to 10 numbered slides, each with a title, 3 short bullet points and a picture idea, plus what to say on each slide.' },
+    { words: ['worksheet'], output: 'Give the result as: learning goals, 10 numbered questions of mixed types (fill in the blanks, MCQ, short answer) from easy to hard, and an answer key.' },
+    { words: ['notes'], plural: true, output: 'Give the result as: short headings, bullet-point notes under each, key words in bold, one simple diagram idea, and 5 quick revision questions.' },
+    { words: ['essay'], output: 'Give the result as: a title, a short outline, then the full essay with an introduction, 3 body paragraphs and a conclusion.' },
+    { words: ['speech'], output: 'Give the result as: a 3-minute speech with an opening hook, 3 main points with one example each, and a strong ending.' },
+    { words: ['poem', 'kavita'], output: 'Give the result as: a title and a poem of 4 to 6 short stanzas, then the meaning of each stanza in one line.' },
+    { words: ['story'], output: 'Give the result as: a title, a story in 4 to 6 short parts with a clear beginning, middle and end, simple dialogue, and the lesson in one line at the end.' },
+    { words: ['game'], output: 'Give the result as: the goal of the game, the rules, what I need, numbered steps to play, and 3 ways to make it harder.' },
+    { words: ['website', 'app'], output: 'Give the result as: a short plan, the list of pages or screens, the full code with comments, and numbered steps to run it.' },
+    { words: ['model', 'project', 'experiment'], output: 'Give the result as: a list of cheap materials, numbered steps to build it, the science behind it in simple words, safety tips, and 3 questions a judge might ask.' },
+  ],
+  makeTask: 'Help me make {thing}. First plan it, then build it step by step.',
+
+  // "I am weak in X" style ideas: topic is X, and the context asks the AI to go slowly.
+  struggle: ['weak in', 'bad at', "don't understand", 'dont understand', 'do not understand', 'struggle with', 'struggling with', 'confused about', 'scared of'],
+  struggleContext: 'I find this topic hard, so go slowly and check that I understand before moving on.',
+
   // Stripped from the start of the idea, longest first, until none match.
   // "make" (not "make a") so the article stays: "Help me make a poster".
-  fillers: ['make me', 'create me', 'build me', 'show me', 'give me', 'i want to', 'i would like to', 'i want', 'can you', 'please', 'help me', 'teach me', 'tell me about',
+  fillers: ['make me', 'create me', 'build me', 'show me', 'give me', 'i want to',
+    'i am weak in', "i'm weak in", 'i am bad at', "i'm bad at", "i don't understand", 'i dont understand', 'i do not understand',
+    'i struggle with', 'i am struggling with', "i'm struggling with", 'i am confused about', "i'm confused about",
+    'help me with', 'help me understand', 'prepare for', 'make a plan for', 'plan for', 'i would like to', 'i want', 'can you', 'please', 'help me', 'teach me', 'tell me about',
     'learn about', 'learn', 'understand', 'know about', 'explain', 'make', 'create', 'build', 'design', 'write', 'draw',
     'what is', 'what are', 'about', 'quiz me on', 'test me on', 'practise', 'practice', 'revise', 'plan'],
 
@@ -72,6 +101,9 @@ const NIRDESH_DATA = {
     role: 'Act as {role} who is also a friendly teacher.',
     roleTeacher: 'Act as {role}.',
     roleGeneral: 'Act as an expert teacher in {topic}.',
+    roleQuestion: 'Act as a friendly expert teacher who explains things simply.',
+    taskQuestion: 'Answer this question: {topic}? Start with the basics and build up to the full answer.',
+    outputQuestion: 'Give the result as: a 2-line short answer, then a step-by-step explanation with a simple diagram, one everyday example, and 3 questions to check I understood.',
     task: {
       learn: 'Explain {topic}, from the basics up to the main ideas.',
       make: 'Help me make {topic}. First plan it, then build it step by step.',
