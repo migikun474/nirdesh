@@ -4,11 +4,13 @@ const PART_KEYS = ['role', 'task', 'context', 'constraints', 'output'];
 // Whole-word match. Subjects also accept a plural "s" ("rockets"); intents don't, so "exams" stays out of practise.
 function hasWord(text, word, plural) {
   const esc = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp('\\b' + esc + (plural ? 's?' : '') + '\\b', 'i').test(text);
+  return new RegExp('\\b' + esc + (plural ? '(?:e?s)?' : '') + '\\b', 'i').test(text);
 }
 
+// Nouns like "website" or "game" only mean "make" when the student asks to make something.
 function findIntent(text) {
-  const hit = NIRDESH_DATA.intents.find(([, words]) => words.some(w => hasWord(text, w)));
+  const hit = NIRDESH_DATA.intents.find(([id, words]) =>
+    (id !== 'make' || MAKE_ASK.test(text)) && words.some(w => hasWord(text, w)));
   return hit ? hit[0] : 'learn';
 }
 
@@ -32,7 +34,13 @@ function findTopic(original) {
 
 // Small words that sit between the verb and the thing: "make me a ...", "... and make a comic".
 const LINK_WORDS = new Set(['a', 'an', 'the', 'me', 'my', 'and', 'with', 'to', 'some', 'make', 'create', 'build', 'write',
-  'design', 'draw', 'do', 'on', 'about', 'for', 'of', 'i', 'want', 'please', 'help']);
+  'design', 'draw', 'do', 'on', 'about', 'for', 'of', 'i', 'want', 'please', 'help', 'prepare',
+  'explain', 'learn', 'understand', 'teach', 'tell', 'know', 'what', 'is', 'how', 'does', 'why', 'revise', 'practise', 'practice']);
+
+// "explain Mendel's experiment" is a question about an experiment, not a request to build one.
+// A make-word only counts when the student asks to make it, or starts with it ("a poster on ...").
+const MAKE_ASK = /\b(make|create|build|design|draw|write|prepare|do|help me with)\b|^code\b/i;
+const OPENERS = new Set(['a', 'an', 'the', 'my', 'some', 'i', 'want', 'to', 'please', 'need']);
 
 // "make a comic on Newton's laws" -> { label: 'comic', thing: 'a comic on Newton's laws', topic: "Newton's laws" }.
 function findMake(original) {
@@ -47,6 +55,8 @@ function findMake(original) {
       while (before.length && adjectives.length < 2 && !LINK_WORDS.has(before[before.length - 1].toLowerCase())) {
         adjectives.unshift(before.pop());
       }
+      const asked = MAKE_ASK.test(before.join(' ')) || before.every(x => OPENERS.has(x.toLowerCase()));
+      if (!asked) return null;
       const label = [...adjectives, m[0]].join(' ');
 
       const after = original.slice(m.index + m[0].length);
@@ -71,11 +81,12 @@ function findMake(original) {
   return null;
 }
 
-// Most keyword hits wins; ties go to the subject listed first.
+// Most keyword hits wins, a two-word keyword counting twice ("power sharing" beats "power");
+// ties go to the subject listed first.
 function findSubject(topic) {
   let best = NIRDESH_DATA.general, bestHits = 0;
   for (const s of NIRDESH_DATA.subjects) {
-    const hits = s.keywords.filter(k => hasWord(topic, k, true)).length;
+    const hits = s.keywords.filter(k => hasWord(topic, k, true)).reduce((n, k) => n + k.split(' ').length, 0);
     if (hits > bestHits) { best = s; bestHits = hits; }
   }
   return best;

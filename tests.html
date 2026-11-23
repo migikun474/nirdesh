@@ -32,6 +32,9 @@ const cases = [
   // Beyond the plan: specific formats and clean topics.
   ['make me integration and make interactive comic', '9-10', r => r.topic === 'integration' && r.parts.task.startsWith('Help me make an interactive comic about integration.') && r.parts.output.includes('panels')],
   ['I am weak in trigonometry', '9-10', r => r.topic === 'trigonometry' && r.subject === 'maths' && r.parts.context.includes('go slowly')],
+  ["explain mendel's experiment", '9-10', r => r.intent === 'learn' && r.subject === 'biology' && r.parts.task === "Explain mendel's experiment, from the basics up to the main ideas."],
+  ['what is a website', '9-10', r => r.intent === 'learn' && r.subject === 'computers'],
+  ['what is power sharing', '9-10', r => r.subject === 'civics'],
   ['why is the sky blue', '9-10', r => r.parts.task.startsWith('Answer this question: Why is the sky blue?') && !r.parts.role.includes('teacher in why')],
 ];
 
